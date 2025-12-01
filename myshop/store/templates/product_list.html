@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Products</h2>
+
+{% if request.COOKIES.visited_store_before %}
+    <p class="text-success">Welcome back! (Cookie detected)</p>
+{% else %}
+    <p class="text-info">Welcome new visitor! (Setting cookie now)</p>
+{% endif %}
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 product-card">
+        <div class="card h-100">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="placeholder">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">${{ product.price }}</p>
+                <p class="card-text text-muted small">{{ product.description|truncatewords:10 }}</p>
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary w-100">Add to Cart</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
